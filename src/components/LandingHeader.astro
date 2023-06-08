@@ -3,7 +3,8 @@ import Logo from "./Logo.astro";
 ---
 
 <header
-    class="py-3 px-10 flex items-center fixed top-0 w-full justify-between z-50"
+    id="landing-header"
+    class="fixed py-3 px-10 flex items-center top-0 w-full justify-between z-50"
 >
     <div class="flex flex-grow justify-start basis-0">
         <Logo />
@@ -11,7 +12,7 @@ import Logo from "./Logo.astro";
 
     <nav>
         <ul
-            class="flex text-sm [&>li>a]:font-medium [&>li>a]:text-gray-900 [&>li>a]:inline-block [&>li>a]:px-4 [&>li>a]:py2"
+            class="flex text-sm [&>li>a]:font-medium [&>li>a]:text-current [&>li>a]:inline-block [&>li>a]:px-4 [&>li>a]:py-2 [&>li>a]:transition-colors [&>li>a]:duration-500"
         >
             <li><a href="#">Model S</a></li>
             <li><a href="#">Model 3</a></li>
@@ -24,7 +25,7 @@ import Logo from "./Logo.astro";
 
     <nav class="flex flex-grow justify-end basis-0">
         <ul
-            class="flex text-sm [&>li>a]:font-medium [&>li>a]:text-gray-900 [&>li>a]:inline-block [&>li>a]:px-4 [&>li>a]:py2"
+            class="flex text-sm [&>li>a]:font-medium [&>li>a]:text-current [&>li>a]:inline-block [&>li>a]:px-4 [&>li>a]:py-2 [&>li>a]:transition-colors [&>li>a]:duration-500"
         >
             <li><a href="#">Soporte</a></li>
             <li><a href="#">Tienda</a></li>
@@ -32,4 +33,70 @@ import Logo from "./Logo.astro";
             <li><a href="#">Menú</a></li>
         </ul>
     </nav>
+
+    <div
+        id="menu-backdrop"
+        class={`
+            absolute bg-black/5 backdrop-blur-lg rounded
+            translate-x-[var(--left)] translate-y-[var(--top)]
+            left-0 top-0
+            w-[var(--width)] h-[var(--height)]
+            transition-all duration-500
+            ease-in-out opacity-0 -z-10
+        `}
+    />
 </header>
+
+<script>
+    const listItem = document.querySelectorAll('#landing-header li')
+    const menuBackDrop = document.querySelector('#menu-backdrop') as HTMLElement // TypeScript
+
+    listItem.forEach((item) => {
+        item.addEventListener('mouseenter', () => {
+            const { left, top, width, height } = item.getBoundingClientRect() // Método para que de pos. X,Y, w,h t,b. Su rendimiento NO es el mejor
+            // const { clientHeight, clientWidth } = item
+
+            // console.log({ left, top, width, height })
+            // console.log({ clientHeight, clientWidth })
+
+            menuBackDrop.style.setProperty('--left', `${left}px`)
+            menuBackDrop.style.setProperty('--top', `${top}px`)
+            menuBackDrop.style.setProperty('--width', `${width}px`)
+            menuBackDrop.style.setProperty('--height', `${height}px`)
+            
+            menuBackDrop.style.opacity = '1'
+            menuBackDrop.style.visibility = 'visible'
+        })
+
+        item.addEventListener('mouseleave', () => {
+            menuBackDrop.style.opacity = '0'
+            menuBackDrop.style.visibility = 'hidden'
+        })
+    })
+</script>
+
+<script>
+    const $header = document.querySelector("#landing-header") as HTMLElement; // TypeScript
+
+    // 'querySelector' es mejor que utilizar getElementById, getElementByClassÑame, byName, byTagName...
+
+    const observerOptions = {
+        root: null, // default to the viewport
+        rootMargin: "0px", // en cuanto se vea el elemento
+        threshold: 0.9, // porcentaje de visibilidad
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            const { isIntersecting } = entry;
+
+            if (isIntersecting) {
+                const color = entry.target.getAttribute("data-header-color");
+                $header.style.color = color;
+            }
+        });
+    }, observerOptions);
+
+    const $sections = document.querySelectorAll(".landing-section");
+    $sections.forEach((section) => observer.observe(section));
+</script>
