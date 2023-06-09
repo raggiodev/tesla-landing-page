@@ -4,7 +4,7 @@ import Section from "./Section.astro";
 
 <Section
   title="Model S"
-  subtitle="Programe una consulta virtual"
+  subtitle="View Inventory"
   color="black"
   id="model-s"
 >
@@ -13,13 +13,13 @@ import Section from "./Section.astro";
       class="border-[3px] border-gray-600 bg-gray-600 text-sm rounded font-medium text-white px-12 py-2 inline-block transition-colors hover:border-gray-500 hover:bg-gray-500"
       href="#"
     >
-      Pedido personalizado</a
+      Order Now</a
     >
     <a
       class="bg-white text-sm rounded font-medium px-12 py-2 transition-colors hover:bg-black hover:text-white inline-flex justify-center items-center text-black"
       href="#"
     >
-      Saber más</a
+      Demo Drive</a
     >
   </div>
 
@@ -44,7 +44,7 @@ import Section from "./Section.astro";
     }
   }
 
-  var imageElement = document.querySelector("#bg-image-models") as HTMLImageElement;
+  var imageElement = document.querySelector("#bg-image-models") as HTMLImageElement; // TypeScript
 
   if (isEdge()) {
     imageElement.src = "model-s.webp";
